@@ -1,1 +1,0 @@
-etc_shadow: dict = {"user": "heslo1", "piesek": "kotek"}
