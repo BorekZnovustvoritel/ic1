@@ -39,27 +39,28 @@ void strcopy(char *dest, char *src) {
 }
 
 short authenticate(char *login, char *password) {
-    int isAdmin = 0;
-    char userData[2][MAX_LENGTH]; //both are overflowable
-    char data[2][MAX_LENGTH];
+	int isAuth = 0;
+	int isAdmin = 0;
+	char userPassword[MAX_LENGTH]; //overflowable
+    char data[2][MAX_LENGTH]; //contains the "view" from stash
     int charIndex = 0;
     short nameOrPassword = 0; // 0 for name, 1 for password
-    strcopy(userData[0], login);
-    strcopy(userData[1], password);
+    
     FILE* in = fopen("stash", "r");
     char ch;
     while ((ch = fgetc(in)) != EOF) {
         if (ch == '\n') {
             data[1][charIndex] = '\0';
             if (strcmp(login, data[0]) == 0) {
-                if (strcmp(password, data[1]) == 0) {
-                    fclose(in);
-                    return 1;
-                }
+				break;
             }
             charIndex = 0;
             nameOrPassword = 0;
+			isAdmin = 0;
         }
+		else if (ch == ';') {
+			isAdmin = fgetc(in) - '0';
+		}
         else if (ch == ':') {
             data[0][charIndex+1] = '\0';
             charIndex = 0;
@@ -74,19 +75,27 @@ short authenticate(char *login, char *password) {
         }
     }
     fclose(in);
-    if (isAdmin) return 2;
+    strcopy(userPassword, password); // Here we can overflow the userPassword buffer into isAdmin
+	if (strcmp(userPassword, data[1]) == 0) {
+        isAuth = 1;
+    }
+    if (isAdmin) return 2; // admin login
+	if (isAuth) return 1; // normal login
     printf("%d", isAdmin);
-    return 0;
+    return 0; // login not successful
 }
 
 int main() {
-    long loglen = 0;
+    size_t loglen = 0;
     printf("Login as: ");
     char* bufferlog = inputString(&loglen);
-    long passlen = 0;
+    size_t passlen = 0;
     printf("\nPassword: ");
     char* bufferpass = inputString(&passlen);
     int ans = authenticate(bufferlog, bufferpass);
-    printf("\nAuthentication value: %d", ans);
+    printf("\nAuthentication value: %d\n", ans);
+	
+	free(bufferlog);
+	free(bufferpass);
     return 0;
 }
