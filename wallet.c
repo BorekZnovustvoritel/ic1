@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 #define MAX_LENGTH 10
+float balance;
 
 char *inputString(size_t *size){
     char *str;
@@ -21,6 +23,7 @@ char *inputString(size_t *size){
     *size = len;
     return realloc(str, sizeof(char)*len);
 }
+
 int strcmp(const char* str1, const char* str2) {
     int i = 0;
     while (str1[i] != '\0' && str2[i] != '\0') {
@@ -30,6 +33,7 @@ int strcmp(const char* str1, const char* str2) {
     if (str1[i] == str2[i] && str1[i] == '\0') return 0;
     return 1;
 }
+
 void strcopy(char *dest, char *src) {
     unsigned int i = 0;
     while (src[i] != '\0') {
@@ -81,21 +85,113 @@ short authenticate(char *login, char *password) {
     }
     if (isAdmin) return 2; // admin login
 	if (isAuth) return 1; // normal login
-    printf("%d", isAdmin);
     return 0; // login not successful
 }
 
+int menu(char** list, int len) {
+	system("clear");
+	printf("Choose an option:\n");
+	for (int i = 0; i < len; i++) {
+		printf("%d .. %s\n", i, list[i]);
+	}
+	printf("%d .. Exit\n", len);
+	int out = -1;
+	while (out > len || out < 0) {
+		scanf("%d", &out);
+	}
+	getchar(); // to clear the stdin buffer
+	return out;
+}
+
+void loadBalance() { // Initiate global value
+	FILE* in = fopen("surelyJsonFromServerAndNotLocallyStoredFile.exe.jpeg.png.piesek", "r");
+	fscanf(in, "%f", &balance);
+	fclose(in);
+}
+
+void persistBalance() { // Store global value into a file
+	FILE* out = fopen("surelyJsonFromServerAndNotLocallyStoredFile.exe.jpeg.png.piesek", "w");
+	fprintf(out, "%.2f", balance);
+	fclose(out);
+}
+void printBalance() {
+	system("clear");
+	printf("Your balance is: $%.2f\nPress enter to continue.\n", balance);
+	getchar();
+}
+
+void adminMenu() {
+	system("clear");
+	loadBalance();
+	short exit = 0;
+	char* options[4] = {"Give myself $99999", "Pay", "Check balance", "Admin tools"};
+	do {
+		switch(menu(options, 4)) {
+			case 0: //Give myself $99999
+				balance += 99999;
+			break;
+			case 1: //Pay
+				//TODO (something like pay(), maybe exploitable)
+			break;
+			case 2: //Check balance
+				printBalance();
+			break;
+			case 3: //Admin tools
+				//TODO add more options, adjust
+			break;
+			default: //Exit
+				exit = 1;
+			break;
+		}
+	} while (!exit);
+	persistBalance(); //saves the current amount of money
+}
+
+void userMenu() {
+	system("clear");
+	loadBalance();
+	short exit = 0;
+	char* options[2] = {"Pay", "Check balance"};
+	do {
+		switch(menu(options, 2)) {
+			case 0: //Pay
+				//TODO (again, like in adminMenu())
+			break;
+			case 1: //Check balance
+				printBalance();
+			break;
+			default: //Exit
+				exit = 1;
+			break;
+		}
+	} while (!exit);
+	persistBalance();
+}
+
 int main() {
+	system("clear");
+	printf("CRYPTOWALLET TM\n\n");
     size_t loglen = 0;
     printf("Login as: ");
     char* bufferlog = inputString(&loglen);
     size_t passlen = 0;
     printf("\nPassword: ");
     char* bufferpass = inputString(&passlen);
-    int ans = authenticate(bufferlog, bufferpass);
-    printf("\nAuthentication value: %d\n", ans);
+	int ans = authenticate(bufferlog, bufferpass);
+    switch(ans) {
+		case 1:
+			userMenu();
+		break;
+		case 2:
+			adminMenu();
+		break;
+		default:
+			printf("\nLOGIN FAILED!\n");
+		break;
+	}
 	
 	free(bufferlog);
 	free(bufferpass);
+	
     return 0;
 }
