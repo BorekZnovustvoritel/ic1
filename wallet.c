@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <unistd.h>
 
 #define MAX_LENGTH 10
 float balance;
@@ -114,10 +115,16 @@ void persistBalance() { // Store global value into a file
 	fprintf(out, "%.2f", balance);
 	fclose(out);
 }
+
 void printBalance() {
 	system("clear");
 	printf("Your balance is: $%.2f\nPress enter to continue.\n", balance);
 	getchar();
+}
+
+void tweakUsers() {
+	system("clear");
+	system("sudo python3 -m editUsers");
 }
 
 void adminMenu() {
@@ -138,6 +145,7 @@ void adminMenu() {
 			break;
 			case 3: //Admin tools
 				//TODO add more options, adjust
+				tweakUsers();
 			break;
 			default: //Exit
 				exit = 1;
