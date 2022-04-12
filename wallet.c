@@ -4,7 +4,7 @@
 #include <unistd.h>
 
 #define MAX_LENGTH 10
-float balance;
+int balance;
 
 char *inputString(size_t *size){
     char *str;
@@ -106,19 +106,19 @@ int menu(char** list, int len) {
 
 void loadBalance() { // Initiate global value
 	FILE* in = fopen("surelyJsonFromServerAndNotLocallyStoredFile.exe.jpeg.png.piesek", "r");
-	fscanf(in, "%f", &balance);
+	fscanf(in, "%d", &balance);
 	fclose(in);
 }
 
 void persistBalance() { // Store global value into a file
 	FILE* out = fopen("surelyJsonFromServerAndNotLocallyStoredFile.exe.jpeg.png.piesek", "w");
-	fprintf(out, "%.2f", balance);
+	fprintf(out, "%d", balance);
 	fclose(out);
 }
 
 void printBalance() {
 	system("clear");
-	printf("Your balance is: $%.2f\nPress enter to continue.\n", balance);
+	printf("Your balance is: $%d\nPress enter to continue.\n", balance);
 	getchar();
 }
 
@@ -126,7 +126,15 @@ void tweakUsers() {
 	system("clear");
 	system("sudo python3 -m editUsers");
 }
-
+void pay(){
+	system("clear");
+	int payment;
+	printf("Enter amout of money to pay: ");
+	scanf("%d", &payment);
+	balance -= payment;
+	printf("Press enter to continue.\n");
+	getchar();
+}
 void adminMenu() {
 	system("clear");
 	loadBalance();
@@ -138,7 +146,7 @@ void adminMenu() {
 				balance += 99999;
 			break;
 			case 1: //Pay
-				//TODO (something like pay(), maybe exploitable)
+				pay();
 			break;
 			case 2: //Check balance
 				printBalance();
@@ -163,7 +171,7 @@ void userMenu() {
 	do {
 		switch(menu(options, 2)) {
 			case 0: //Pay
-				//TODO (again, like in adminMenu())
+				pay();
 			break;
 			case 1: //Check balance
 				printBalance();
