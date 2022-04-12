@@ -22,7 +22,7 @@
 
 ### Buffer Overflow
 
-- `./exploit.py`
+- `./exploit1.py`
 - Zkopírovat si vygenerované heslo
 - `./wallet.o`
 - Objeví se `Login: `, netřeba vyplňovat, nebo lze použít kterýkoli login ze souboru `stash`
@@ -34,8 +34,15 @@
 - Zvolit admin tools (možnost 3)
 - Otevře se shell uživatele `root`
 
+### Integer Overflow
+- `./exploit2.py`
+- Přihlásit se jako libovolný user account (např. `piesek` a `kotek`)
+- Skript vykoná integer overflow a na zvoleném účtu máte maximum peněz  
+
 ## Jak pokračovat?
 
-- Zatím máme jen login, tak se snažte
+- 3 exploity ze zadání hotovy
+- Udělat další podle libosti?
+- Zkrášlit app v C - pozor na rozbití maker (.excpect  musí odpovídat), zůstatek zvlášt pro každý účet v stash?
 - Ďakujem za pozornost, doviďenia
 
