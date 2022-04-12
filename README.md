@@ -35,7 +35,8 @@
 - Otevře se shell uživatele `root`
 
 ### Integer Overflow
-- `./exploit2.py`
+- `chmod 755 exploit3.py`
+- `./exploit3.py`
 - Přihlásit se jako libovolný user account (např. `piesek` a `kotek`)
 - Skript vykoná integer overflow a na zvoleném účtu máte maximum peněz  
 
