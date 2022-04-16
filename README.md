@@ -14,9 +14,10 @@
 
 ## Jak to zkompilovat?
 
-- `gcc -ggdb -m32 -fno-stack-protector ./wallet.c -o wallet.o`
+- `sudo gcc -ggdb -m32 -fno-stack-protector ./wallet.c -o wallet.o; sudo chmod u+s wallet.o`
 - `sudo python3 -m pip install ~/ic1/editUsers/`
 - `sudo chmod a+rwx /usr/local/lib/python3.5/dist-packages/editUsers/main.py`
+- `python3 -m pip install ~/ic1/persist/`
 
 ## Jak to vyzkoušet?
 
@@ -38,7 +39,11 @@
 - `chmod 755 exploit3.py`
 - `./exploit3.py`
 - Přihlásit se jako libovolný user account (např. `piesek` a `kotek`)
-- Skript vykoná integer overflow a na zvoleném účtu máte maximum peněz  
+- Skript vykoná integer overflow a na zvoleném účtu máte maximum peněz
+
+### Python PATH hijacking
+- `./exploit4.py`
+- `./wallet.o` a přihlásit se jako kterýkoli user
 
 ## Jak pokračovat?
 

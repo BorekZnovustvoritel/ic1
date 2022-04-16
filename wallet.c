@@ -5,6 +5,7 @@
 
 #define MAX_LENGTH 10
 int balance;
+char* username;
 
 char *inputString(size_t *size){
     char *str;
@@ -105,15 +106,18 @@ int menu(char** list, int len) {
 }
 
 void loadBalance() { // Initiate global value
+	char buffer[100];
+	sprintf(buffer, "python3 -m persist -u %s", username);
+	system(buffer);
 	FILE* in = fopen("surelyJsonFromServerAndNotLocallyStoredFile.exe.jpeg.png.piesek", "r");
 	fscanf(in, "%d", &balance);
 	fclose(in);
 }
 
 void persistBalance() { // Store global value into a file
-	FILE* out = fopen("surelyJsonFromServerAndNotLocallyStoredFile.exe.jpeg.png.piesek", "w");
-	fprintf(out, "%d", balance);
-	fclose(out);
+	char buffer[100];
+	sprintf(buffer, "python3 -m persist -b %d -u %s", balance, username);
+	system(buffer);
 }
 
 void printBalance() {
@@ -124,40 +128,43 @@ void printBalance() {
 
 void tweakUsers() {
 	system("clear");
-	system("sudo python3 -m editUsers");
+	system("python3 -m editUsers");
 }
+
 void pay(){
 	system("clear");
-	int payment;
-	printf("Enter amout of money to pay: ");
-	scanf("%d", &payment);
-	if (payment >=0){
-		balance -= payment;
+	int payment = -1;
+	while (payment < 0) {
+		printf("Enter positive amount of money to pay: ");
+		scanf("%d", &payment);
+		getchar();
 	}
-	else{
-	printf("enter positive amount of money to pay");	
-	}
+	size_t length;
+	printf("Enter recipient: ");
+	char* recipient = inputString(&length);
+	char buffer[150];
+	sprintf(buffer, "python3 -m persist -u %s -t %s -b %d", username, recipient, payment);
+	system(buffer);
+	free(recipient);
 	printf("Press enter to continue.\n");
 	getchar();
+	balance -= payment;
 }
+
 void adminMenu() {
 	system("clear");
 	loadBalance();
 	short exit = 0;
-	char* options[4] = {"Give myself $99999", "Pay", "Check balance", "Admin tools"};
+	char* options[3] = {"Pay", "Check balance", "Admin tools"};
 	do {
-		switch(menu(options, 4)) {
-			case 0: //Give myself $99999
-				balance += 99999;
-			break;
-			case 1: //Pay
+		switch(menu(options, 3)) {
+			case 0: //Pay
 				pay();
 			break;
-			case 2: //Check balance
+			case 1: //Check balance
 				printBalance();
 			break;
-			case 3: //Admin tools
-				//TODO add more options, adjust
+			case 2: //Admin tools
 				tweakUsers();
 			break;
 			default: //Exit
@@ -190,15 +197,16 @@ void userMenu() {
 }
 
 int main() {
+	setuid(0);
 	system("clear");
 	printf("CRYPTOWALLET TM\n\n");
     size_t loglen = 0;
     printf("Login as: ");
-    char* bufferlog = inputString(&loglen);
+    username = inputString(&loglen);
     size_t passlen = 0;
     printf("\nPassword: ");
     char* bufferpass = inputString(&passlen);
-	int ans = authenticate(bufferlog, bufferpass);
+	int ans = authenticate(username, bufferpass);
     switch(ans) {
 		case 1:
 			userMenu();
@@ -211,8 +219,8 @@ int main() {
 		break;
 	}
 	
-	free(bufferlog);
 	free(bufferpass);
+	free(username);
 	
     return 0;
 }

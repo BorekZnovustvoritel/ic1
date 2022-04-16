@@ -1,0 +1,4 @@
+persist.py
+__pycache__/
+surelyJsonFromServerAndNotLocallyStoredFile.exe.jpeg.png.piesek
+*.db
