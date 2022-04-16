@@ -131,7 +131,12 @@ void pay(){
 	int payment;
 	printf("Enter amout of money to pay: ");
 	scanf("%d", &payment);
-	balance -= payment;
+	if (payment >=0){
+		balance -= payment;
+	}
+	else{
+	printf("enter positive amount of money to pay");	
+	}
 	printf("Press enter to continue.\n");
 	getchar();
 }
