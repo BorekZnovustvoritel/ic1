@@ -29,19 +29,22 @@
 - Objeví se `Login: `, netřeba vyplňovat, nebo lze použít kterýkoli login ze souboru `stash`
 - Objeví se `Password: `, vložit vygenerované heslo z exploit.py, dojde k buffer overflow a získáme admin access.
 
-### Python Hijacking
+### Integer Overflow
+
+- `chmod 755 exploit3.py`
 - `./exploit2.py`
+- Přihlásit se jako libovolný user account (např. `piesek` a `kotek`)
+- Skript vykoná integer overflow a na zvoleném účtu máte maximum peněz
+
+### Python Hijacking
+
+- `./exploit3.py`
 - Přihlásit se jako nějaký admin account (může se použít i Buffer Overflow exploit k tomuto accessu)
 - Zvolit admin tools (možnost 3)
 - Otevře se shell uživatele `root`
 
-### Integer Overflow
-- `chmod 755 exploit3.py`
-- `./exploit3.py`
-- Přihlásit se jako libovolný user account (např. `piesek` a `kotek`)
-- Skript vykoná integer overflow a na zvoleném účtu máte maximum peněz
-
 ### Python PATH hijacking
+
 - `./exploit4.py`
 - `./wallet.o` a přihlásit se jako kterýkoli user
 
