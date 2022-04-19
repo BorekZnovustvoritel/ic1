@@ -14,7 +14,7 @@
 
 ## Jak to zkompilovat?
 
-- `sudo gcc -ggdb -m32 -fno-stack-protector ./wallet.c -o wallet.o; sudo chmod u+s wallet.o`
+- `sudo gcc -ggdb -m32 wallet.c -o wallet.o; sudo chmod u+s wallet.o`
 - `sudo python3 -m pip install editUsers/`
 - `sudo chmod a+rwx /usr/local/lib/python3.5/dist-packages/editUsers/main.py`
 - `python3 -m pip install persist/`
