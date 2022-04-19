@@ -31,7 +31,7 @@
 
 ### Integer Overflow
 
-- `chmod 755 exploit3.py`
+- `chmod 755 exploit2.py`
 - `./exploit2.py`
 - Přihlásit se jako libovolný user account (např. `piesek` a `kotek`)
 - Skript vykoná integer overflow a na zvoleném účtu máte maximum peněz
